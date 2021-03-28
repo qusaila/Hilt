@@ -13,6 +13,7 @@ import com.example.hilltapp.model.Pokemons;
 import com.example.hilltapp.reposetory.Repository;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.functions.Function;
@@ -22,13 +23,11 @@ public class PokemonViewModel extends ViewModel {
     private Repository repository;
 
     private MutableLiveData<ArrayList<Pokemon>> data;
-    private MutableLiveData<ArrayList<Pokemon>> favouriteList;
-
+    private LiveData<List<Pokemon>> favList = null;
     @ViewModelInject
     public PokemonViewModel(Repository repository) {
         this.repository = repository;
-        favouriteList=new MutableLiveData<>(new ArrayList<>());
-        data=new MutableLiveData<>(new ArrayList<>());
+         data=new MutableLiveData<>(new ArrayList<>());
 
     }
 
@@ -36,9 +35,10 @@ public class PokemonViewModel extends ViewModel {
         return data;
     }
 
+
     @SuppressLint("CheckResult")
     public void getPokemons() {
-        repository.getPoKemons()
+        repository.getPokemons()
                 .subscribeOn(Schedulers.io())
                 .map(new Function<Pokemons, ArrayList<Pokemon>>() {
                     @Override
@@ -55,8 +55,22 @@ public class PokemonViewModel extends ViewModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> data.setValue(result),
                         error -> Log.e("viwModel", error.getMessage()));
+    }
+    public LiveData<List<Pokemon>> getFavList() {
+        return favList;
+    }
 
+    public void insertPokemon(Pokemon pokemon) {
+        repository.insertPokemon(pokemon);
 
     }
 
+    public void deletePokemon(String pokemonName) {
+        repository.deletePokemon(pokemonName);
+    }
+
+
+    public void getFavPokemon() {
+        favList = repository.getFavPokemon();
+    }
  }
