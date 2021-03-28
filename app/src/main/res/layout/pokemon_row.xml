@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout         xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+<data>
+    <variable
+        name="pokemon"
+        type="com.example.hilltapp.model.Pokemon" />
+</data>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/img"
+            imageUrl="@{pokemon.url}"
+            android:layout_height="150dp"></ImageView>
+<TextView
+    android:layout_width="match_parent"
+    android:singleLine="true"
+    android:gravity="center"
+    android:text="@{pokemon.name}"
+    android:layout_below="@id/img"
+    android:layout_height="wrap_content"></TextView>
+    </RelativeLayout>
+</layout>
